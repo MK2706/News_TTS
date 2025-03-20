@@ -1,0 +1,6 @@
+pymongo
+flask
+numpy
+pandas
+google-generativeai
+bcrypt
