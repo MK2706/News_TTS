@@ -1,9 +1,8 @@
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 def translate_to_hindi(text):
     if not text or not isinstance(text, str):
         return ""
-
-    translator = Translator()
-    translation = translator.translate(text, src='en', dest='hi')
-    return translation.text
+    
+    translator = GoogleTranslator(source="auto", target="hi")
+    return translator.translate(text)
