@@ -10,3 +10,4 @@ fastapi
 uvicorn
 streamlit
 yake
+pip==25.0.1
