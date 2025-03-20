@@ -1,34 +1,35 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+import requests
 
+API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+headers = {"Authorization": "Bearer HB_API_HERE"}
 
-from transformers import BartTokenizer, BartForConditionalGeneration
-
-# Load the BART model and tokenizer for summarization
-model_name = "facebook/bart-large-cnn"
-tokenizer = BartTokenizer.from_pretrained(model_name)
-summarization_model = BartForConditionalGeneration.from_pretrained(model_name)
-
-def summarize_text(text, max_length=1024):
+def summarize_text_using_api(text, max_length=1024, min_length=200):
     if not text or not isinstance(text, str):
         return ""
-    
-    input_text = "summarize: " + text
-    inputs = tokenizer.encode(input_text, return_tensors="pt", max_length=1024, truncation=True)
-    
-    summary_ids = summarization_model.generate(
-        inputs, 
-        max_length=max_length, 
-        min_length=200,  # Increase min_length for longer summaries
-        length_penalty=1.5,  # Reduce penalty for more balanced output
-        num_beams=6,  # Increase num_beams for better quality summary
-        repetition_penalty=1.2,  # Reduce repetition
-        early_stopping=True
-    )
-    
-    summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-    return summary
 
+    payload = {
+        "inputs": text,
+        "parameters": {
+            "max_length": max_length,
+            "min_length": min_length,
+            "length_penalty": 1.5,
+            "num_beams": 6,
+            "repetition_penalty": 1.2,
+            "early_stopping": True
+        }
+    }
 
+    try:
+        response = requests.post(API_URL, headers=headers, json=payload)
+        response.raise_for_status()
+        result = response.json()
+        return result[0]['summary_text']
+    except Exception as e:
+        print(f"Error during summarization: {e}")
+        return ""
+
+def summarize_text(text, max_length=1024, min_length=200):
+    return summarize_text_using_api(text, max_length, min_length)
