@@ -12,3 +12,4 @@ uvicorn
 streamlit
 yake
 IPython
+lxml
