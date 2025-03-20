@@ -1,3 +1,4 @@
+pip==25.0.1
 datasets
 gTTs
 googletrans==4.0.0-rc1
@@ -10,4 +11,3 @@ fastapi
 uvicorn
 streamlit
 yake
-pip==25.0.1
