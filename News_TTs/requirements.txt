@@ -13,3 +13,4 @@ streamlit
 yake
 IPython
 lxml
+deep_translator
